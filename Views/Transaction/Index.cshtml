@@ -1,0 +1,35 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+@model UserTransaction
+
+<div class="container">
+    <h1>Welcome, @Context.Session.GetString("UserName")</h1>
+    <h1>Current Balance: @Model.User.Alltransaction.Sum( c => c.Amount) </h1>
+
+    
+  @await Html.PartialAsync("_Ammountregis.cshtml")
+  @if (!ViewData.ModelState.IsValid)
+{
+    <span class="text-danger">@ViewData.ModelState[string.Empty].Errors.FirstOrDefault()?.ErrorMessage</span>
+}
+    <table class="table table-bordered border-primary">
+  <thead>
+    <tr>
+      <th scope="col">Ammount</th>
+      <th scope="col">Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+      @foreach( Transaction _transac in @Model.User.Alltransaction){
+        <tr>
+       <th scope="row">@_transac.Amount</th>
+        <td>@_transac.CreatedAt</td>
+        </tr>
+    }
+      
+    
+  </tbody>
+</table>
+</div>
